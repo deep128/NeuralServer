@@ -1,4 +1,3 @@
-//index.js
 
 var fs = require("fs");
 var express = require("express");
@@ -6,7 +5,7 @@ var cors = require("cors");
 var bodyParser = require("body-parser");
 
 var app = express();
-console.log("reading config.json...");
+console.log("Reading config...");
 fs.readFile("./config.json","UTF-8",(err, data)=>{
     if(err) {
         console.log(err)
