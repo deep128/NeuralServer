@@ -2,16 +2,42 @@
 
 var fs = require("fs");
 var path = require ("path");
-var app = require("./src/Server/server");
+var mysql = require("mysql");
+
+console.log("Reading config...");
+var config = JSON.parse(fs.readFileSync("./config.json","UTF-8"));
+
+var app = require("./src/Server/server")(config);
+
 
 var components = {
     modulesPath: []
 };
+
+var con = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'neural'
+});
+
+con.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected to database!");
+  });
+
+var moduleArg = {
+    app: app,
+    con: con,
+    config: config
+}
+
+
 console.log("Reading source...");
 components.modulesPath = getAllFlilsPath("./src");
 
 components.modulesPath.forEach(function(modulePath) {
-    require(modulePath)(app);
+    require(modulePath)(moduleArg);
 });
 
 function getAllFlilsPath(dir) {
