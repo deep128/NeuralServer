@@ -2,9 +2,6 @@
  // module
 
 var jwt = require("jsonwebtoken");
-var crypto = require("crypto");
-
-const secret = crypto.randomBytes(20).toString();
 
 module.exports = function(moduleArg) {
     moduleArg.app.get("/api/authservice", function(req, res) {
@@ -29,7 +26,7 @@ module.exports = function(moduleArg) {
             username: userAuth.username
         }
 
-        var token = jwt.sign(payload, secret, {
+        var token = jwt.sign(payload, moduleArg.config.secret, {
             expiresIn: 1440
         });
         res.status(200);
